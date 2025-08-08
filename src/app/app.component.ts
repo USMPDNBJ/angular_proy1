@@ -35,7 +35,7 @@ export class AppComponent {
         console.log('Estudiante encontrado:', this.estudiante);
       },
       error: (err) => {
-        this.error = 'No se encontró el estudiante o hubo un error en la consulta';
+        this.error = 'No existe información asociada al documento de identidad proporcionado , Por favor, verifique su documento.';
         this.cargando = false;
         console.error('Error:', err);
       }

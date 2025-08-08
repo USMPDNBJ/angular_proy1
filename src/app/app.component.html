@@ -1,51 +1,122 @@
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <div class="page-wrapper">
   <div class="content-container">
-    <div class="header">
-      <div class="logo">
-        <img src="https://mentor.pe/wp-content/uploads/2023/11/USMP.png" alt="Logo USMP">
+    <!-- HEADER -->
+  <header class="usmp-header">
+    <div class="header-left">
+      <a href="https://admision.usmp.edu.pe">
+        <img src="https://admision.usmp.edu.pe/wp-content/uploads/2022/05/logo_admision.svg" alt="Logo USMP" class="usmp-logo">
+      </a>
+  
+    </div>
+
+    <div class="header-right">
+      <div class="social-icons">
+        <a href="https://www.facebook.com/admisionUSMPoficial" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.link/ep59y2" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/admision_usmp/?hl=es" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/channel/UCU7fnj-10qTK7UHtRe9UdqA" target="_blank"><i class="fab fa-youtube"></i></a>
       </div>
-      <div class="university-info">
-        <h1>UNIVERSIDAD DE SAN MARTIN DE PORRES</h1>
-        <p>Proceso de Admisión 2025</p>
+      <div class="contact">
+        <i class="fas fa-phone-alt"></i>
+        <span>Contáctanos | 01 748 4747</span>
       </div>
     </div>
+  </header>
+
 
     <div class="main-container">
       <div class="title-section">
         <h2>CONSULTA DE POSTULACIÓN</h2>
       </div>
 
-      <div class="criteria-header">
-        Digite su DNI
-      </div>
-
       <div class="form-container">
-        <div class="input-container">
-          <input 
-            type="text"
-            class="search-input"
-            [(ngModel)]="numDocBuscar"
-            placeholder="Ingrese el número de documento">
+        <div class="form-header">
+          <div class="form-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+          </div>
+          <h3>Ingrese el número de su documento de identidad </h3>
+          <p class="form-description">(DNI - Pasaporte - Carnet de extranjería)</p>
         </div>
 
-        <button 
-          class="search-btn"
-          (click)="buscarEstudiante()"
-          [disabled]="cargando">
-          {{ cargando ? 'Buscando...' : 'Buscar Estudiante' }}
-        </button>
+        <div class="input-section">
+          <div class="input-container">
+            <div class="input-label">
+              <span class="label-text">Número de Documento</span>
+              <span class="required">*</span>
+            </div>
+            <input 
+              type="text"
+              class="search-input"
+              [(ngModel)]="numDocBuscar"
+              placeholder="Digite aquí "
+              maxlength="8">
+            <div class="input-help">
+              <small>Ingrese solo números, sin espacios ni guiones</small>
+            </div>
+          </div>
+
+          <button 
+            class="search-btn"
+            (click)="buscarEstudiante()"
+            [disabled]="cargando || !numDocBuscar || numDocBuscar.length < 8">
+            <span class="btn-icon" *ngIf="!cargando">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </span>
+            <span class="btn-text">{{ cargando ? 'Consultando...' : 'Consultar Estado' }}</span>
+          </button>
+        </div>
 
         <div class="loading" *ngIf="cargando">
           <div class="spinner"></div>
-          <p>Cargando datos del estudiante...</p>
+          <p>Consultando base de datos de postulantes...</p>
+          <small>Por favor espere un momento</small>
         </div>
 
+        <!-- Alerta dinámica según el estado -->
         <div 
-          class="alert custom-success" 
+          class="result-container"
           *ngIf="estudiante && !error">
-          <div class="success-icon">✓</div>
-          <div class="message-content">
-            Estimado postulante <strong>{{ estudiante.nombre }} {{ estudiante.apellidoPaterno }} {{ estudiante.apellidoMaterno }}</strong> con número de documento <strong>{{ estudiante.numDoc }}</strong> en este proceso de admisión ha sido <strong class="status-highlight">{{ estudiante.estadoAdmision }}</strong>.
+          <div 
+            class="alert"
+            [ngClass]="{
+              'custom-success': estudiante.estadoAdmision === 'Aprobado',
+              'custom-error': estudiante.estadoAdmision === 'Desaprobado', 
+              'custom-warning': estudiante.estadoAdmision === 'No especificado'
+            }">
+            
+            <!-- Ícono dinámico según el estado -->
+            <div class="status-icon">
+              <span *ngIf="estudiante.estadoAdmision === 'Aprobado'">✓</span>
+              <span *ngIf="estudiante.estadoAdmision === 'Desaprobado'">✗</span>
+              <span *ngIf="estudiante.estadoAdmision === 'No especificado'">⚠</span>
+            </div>
+            
+            <div class="message-content">
+              <div class="student-info">
+                <h4>Resultado de la Consulta</h4>
+                <p>
+                  <strong>Postulante:</strong> {{ estudiante.nombre }} {{ estudiante.apellidoPaterno }} {{ estudiante.apellidoMaterno }}
+                </p>
+                <p>
+                  <strong>DNI:</strong> {{ estudiante.numDoc }}
+                </p>
+                <p>
+                  <strong>Estado:</strong> <span class="status-highlight">{{ estudiante.estadoAdmision }}</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -53,394 +124,12 @@
           class="alert error" 
           *ngIf="error">
           <div class="error-icon">⚠</div>
-          <div class="error-message">{{ error }}</div>
+          <div class="error-message">
+            <h4>NO SE ENCONTRARON RESULTADOS</h4>
+            <p>{{ error }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-  }
-
-  .page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 900px;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-    width: 100%;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 25px 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-  }
-
-  .logo {
-    width: 80px;
-    height: 80px;
-    margin-right: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
-  }
-
-  .university-info h1 {
-    color: #c41e3a;
-    font-size: 2.0rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .university-info p {
-    color: #555;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 600;
-  }
-
-  .main-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    width: 100%;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .title-section {
-    background: linear-gradient(135deg, #c41e3a, #a01729);
-    color: white;
-    padding: 30px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .title-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-    animation: shine 3s infinite;
-  }
-
-  @keyframes shine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  .title-section h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .criteria-header {
-    background: #c41e3a;
-    color: white;
-    padding: 18px 40px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .form-container {
-    padding: 50px 40px;
-    background: white;
-    text-align: center;
-  }
-
-  .input-container {
-    margin-bottom: 35px;
-    position: relative;
-  }
-
-  .search-input {
-    width: 100%;
-    max-width: 400px;
-    padding: 18px 25px;
-    border: 3px solid #e0e0e0;
-    border-radius: 15px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    background: #fafafa;
-    text-align: center;
-    font-weight: 500;
-  }
-
-  .search-input:focus {
-    outline: none;
-    border-color: #c41e3a;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(196, 30, 58, 0.15);
-    transform: scale(1.02);
-  }
-
-  .search-btn {
-    background: linear-gradient(135deg, #c41e3a, #a01729);
-    color: white;
-    border: none;
-    padding: 18px 50px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 200px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .search-btn:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(196, 30, 58, 0.4);
-  }
-
-  .search-btn:active {
-    transform: translateY(-1px);
-  }
-
-  .search-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .alert {
-    margin-top: 40px;
-    padding: 25px;
-    border-radius: 15px;
-    animation: fadeIn 0.5s ease;
-    position: relative;
-    text-align: left;
-  }
-
-  .custom-success {
-    background: linear-gradient(135deg, #f8fff8, #e8f5e8);
-    border: 3px solid #4caf50;
-    color: #000000;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .success-icon {
-    width: 40px;
-    height: 40px;
-    background: #4caf50;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .message-content {
-    flex: 1;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    font-weight: 500;
-  }
-
-  .message-content strong {
-    color: #000000;
-  }
-
-  .status-highlight {
-    background: linear-gradient(135deg, #4caf50, #45a049);
-    color: white !important;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.95em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
-  }
-
-  .alert.error {
-    background: linear-gradient(135deg, #ffebee, #ffcdd2);
-    border: 3px solid #f44336;
-    color: #c62828;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .error-icon {
-    width: 40px;
-    height: 40px;
-    background: #f44336;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-
-  .error-message {
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  @keyframes fadeIn {
-    from { 
-      opacity: 0; 
-      transform: translateY(30px) scale(0.95); 
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0) scale(1); 
-    }
-  }
-
-  .loading {
-    text-align: center;
-    margin-top: 30px;
-    padding: 20px;
-  }
-
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #c41e3a;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .loading p {
-    color: #666;
-    font-size: 1.1rem;
-    font-weight: 500;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .page-wrapper {
-      padding: 15px;
-    }
-
-    .header {
-      flex-direction: column;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .logo {
-      margin-right: 0;
-      margin-bottom: 15px;
-    }
-
-    .university-info h1 {
-      font-size: 2.2rem;
-    }
-
-    .form-container {
-      padding: 30px 20px;
-    }
-
-    .search-input {
-      font-size: 1rem;
-      padding: 15px 20px;
-      max-width: 100%;
-    }
-
-    .search-btn {
-      padding: 15px 30px;
-      font-size: 1rem;
-      min-width: 180px;
-    }
-
-    .alert {
-      padding: 20px;
-      flex-direction: column;
-      text-align: center;
-      gap: 10px;
-    }
-
-    .custom-success {
-      text-align: left;
-    }
-
-    .message-content {
-      text-align: center;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .university-info h1 {
-      font-size: 1.8rem;
-    }
-
-    .title-section h2 {
-      font-size: 1.6rem;
-    }
-
-    .form-container {
-      padding: 20px 15px;
-    }
-
-    .criteria-header {
-      padding: 15px 20px;
-      font-size: 1rem;
-    }
-  }
-</style>
