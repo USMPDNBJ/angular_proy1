@@ -9,7 +9,10 @@ export interface Estudiante {
   apellidoMaterno: string;
   estadoAdmision: string | null;
   numDoc: string;
+  especialidad: string;
   sede:string;
+  modalidad: string;
+  codEspecialidad: string;
 }
 
 @Injectable({
