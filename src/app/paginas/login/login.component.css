@@ -5,64 +5,66 @@
   box-sizing: border-box;
 }
 
-/* Estilos para el componente Angular */
-:host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
-  font-family: 'Arial', sans-serif;
-}
-
-/* Alternativa para el body si es una página completa */
-body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Si necesitas un contenedor wrapper */
+/* Contenedor principal */
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #BD1714 0%, #8b0000 100%);
   padding: 20px;
 }
 
-/* Contenedor principal del login */
+/* Contenedor de la página de login */
 .login-container {
+  display: flex;
   background: white;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 800px;
 }
 
-.login-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(135deg, #BD1714 0%, #8b0000 100%);
+/* División en dos columnas */
+.login-split {
+  display: flex;
+  width: 100%;
+}
+
+/* Sección del logo */
+.login-logo {
+  flex: 1;
+  background: #BD1714;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: white;
+}
+
+.login-logo img {
+  max-width: 150px;
+  margin-bottom: 10px;
+}
+
+.login-logo h2 {
+  font-size: 18px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Sección del formulario */
+.login-form {
+  flex: 1;
+  padding: 40px;
+  text-align: center;
 }
 
 /* Título */
-.login-container h1 {
-  color:  #BD1714;
+.login-form h1 {
+  color: #BD1714;
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 30px;
@@ -78,7 +80,7 @@ body {
 
 .form-group label {
   display: block;
-  color:  #BD1714;
+  color: #BD1714;
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 14px;
@@ -97,7 +99,7 @@ body {
 
 .form-group input:focus {
   outline: none;
-  border-color:  #BD1714;
+  border-color: #BD1714;
   background-color: white;
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
 }
@@ -110,7 +112,7 @@ body {
 button {
   width: 100%;
   padding: 14px;
-   background: linear-gradient(135deg, #BD1714 0%, #8b0000 100%);
+  background: linear-gradient(135deg, #BD1714 0%, #8b0000 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -154,12 +156,21 @@ button:disabled {
 
 /* Efectos responsive */
 @media (max-width: 480px) {
+  .login-split {
+    flex-direction: column;
+  }
+  .login-logo, .login-form {
+    flex: none;
+    width: 100%;
+  }
   .login-container {
     margin: 20px;
+    padding: 0;
+  }
+  .login-form {
     padding: 30px 20px;
   }
-  
-  .login-container h1 {
+  .login-form h1 {
     font-size: 24px;
   }
 }
