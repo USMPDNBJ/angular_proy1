@@ -1,0 +1,17 @@
+<div class="login-container">
+  <h1>login</h1>
+
+  <div class="form-group">
+    <label>Usuario</label>
+    <input [(ngModel)]="loginData.usuario" placeholder="Ingrese su usuario" />
+  </div>
+
+  <div class="form-group">
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)]="loginData.contrasena" placeholder="Ingrese su contraseña" />
+  </div>
+
+  <button (click)="onLogin()" [disabled]="cargando">Ingresar</button>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
