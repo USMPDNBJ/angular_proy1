@@ -1,11 +1,11 @@
-/* Estilos generales */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Contenedor principal */
+
 .login-wrapper {
   display: flex;
   justify-content: center;
@@ -14,7 +14,6 @@
   padding: 20px;
 }
 
-/* Contenedor de la página de login */
 .login-container {
   display: flex;
   background: white;
@@ -25,13 +24,12 @@
   max-width: 800px;
 }
 
-/* División en dos columnas */
+
 .login-split {
   display: flex;
   width: 100%;
 }
 
-/* Sección del logo */
 .login-logo {
   flex: 1;
   background: #BD1714;
@@ -55,14 +53,14 @@
   letter-spacing: 1px;
 }
 
-/* Sección del formulario */
+
 .login-form {
   flex: 1;
-  padding: 40px;
+  padding: 90px;
   text-align: center;
 }
 
-/* Título */
+
 .login-form h1 {
   color: #BD1714;
   font-size: 28px;
@@ -72,7 +70,7 @@
   letter-spacing: 1px;
 }
 
-/* Grupos de formulario */
+
 .form-group {
   margin-bottom: 20px;
   text-align: left;
@@ -86,7 +84,6 @@
   font-size: 14px;
 }
 
-/* Campos de entrada */
 .form-group input {
   width: 100%;
   padding: 12px 15px;
@@ -101,14 +98,14 @@
   outline: none;
   border-color: #BD1714;
   background-color: white;
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(231, 186, 178, 0.767);
 }
 
 .form-group input::placeholder {
   color: #a0aec0;
 }
 
-/* Botón de ingreso */
+
 button {
   width: 100%;
   padding: 14px;
